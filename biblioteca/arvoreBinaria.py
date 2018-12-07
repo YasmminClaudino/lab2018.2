@@ -1,4 +1,4 @@
-class No():
+ class No():
     def __init__(self, chave, dado):
         self.__dado = dado
         self.__chave = chave

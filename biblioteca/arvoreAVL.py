@@ -212,25 +212,4 @@ class arvoreAVL():
                 x = x.getPai()
                 nivel += 1
         return nivel
-###################################################
 
-generos=int(input())
-for gen in range(generos):
-  Banco=arvoreAVL()
-  while True:
-    cmd=input()
-    if cmd[0]=="I":
-      Banco.inserirElemento(int(cmd[1:]))
-    elif cmd[0]=="N":
-      print(Banco.Nivel(Banco.buscar(Banco.getRaiz(), int(cmd[1:]))))
-    elif cmd[0]=="L":
-      Lfilme=cmd.split(" ")
-      FilmesNoBanco=[]
-      for i in range(int(Lfilme[1]),int(Lfilme[2])+1):
-        if Banco.buscar(Banco.getRaiz(),i).getChave() is not None:
-          FilmesNoBanco.append(str(i))
-      print(" ".join(FilmesNoBanco))
-    else:
-      break
-  if gen!=generos-1:
-    print("")
