@@ -29,46 +29,43 @@ class arvoreAVL():
         self.__vazio.setDir(self.getVazio())
         self.__vazio.setPai(self.getVazio())
         self.__raiz = self.getVazio()
-        self.__string=""
+        self.__string = ""
 
     def setString(self, value):
-      self.__string=value
+        self.__string = value
+
     def getVazio(self):
         return self.__vazio
+
     def setVazio(self, valor):
         self.__vazio = valor
+
     def getRaiz(self):
         return self.__raiz
+
     def setRaiz(self, valor):
         self.__raiz = valor
 
-    def altura(self, x):
-        if x == self.getVazio():
-            return -1
-        h1 = self.altura(x.getEsq())
-        h2 = self.altura(x.getDir())
-        return (1 + max(h1, h2))
-
-    def emOrdem(self,x):
-      if x != self.getVazio():
-        self.emOrdem(x.getEsq())
-        self.__string += str(x.getChave()) + " "
-        self.emOrdem(x.getDir())
-      return self.__string[:-1]
-
-    def preOrdem(self, x):
-      if x != self.getVazio():
-        self.__string += str(x.getChave()) + " "
-        self.preOrdem(x.getEsq())
-        self.preOrdem(x.getDir())
-      return self.__string[:-1]
-
-    def posOrdem(self, x):
-      if x != self.getVazio():
-        self.posOrdem(x.getEsq())
-        self.posOrdem(x.getDir())
-        self.__string += str((x.getChave())) + " "
-      return self.__string[:-1]
+    def inserirElemento(self, dado):
+        novo = No(dado)
+        y = self.getVazio()
+        x = self.getRaiz()
+        while x != self.getVazio():
+            y = x
+            if novo.getChave() < x.getChave():
+                x = x.getEsq()
+            else:
+                x = x.getDir()
+        novo.setPai(y)
+        if y == self.getVazio():
+            self.setRaiz(novo)
+        elif novo.getChave() < y.getChave():
+            y.setEsq(novo)
+        else:
+            y.setDir(novo)
+        novo.setDir(self.getVazio())
+        novo.setEsq(self.getVazio())
+        self.balanceamento(novo)
 
     def buscar(self, x, k):
         while x != self.getVazio() and k != x.getChave():
@@ -87,6 +84,7 @@ class arvoreAVL():
         while x.getDir() != self.getVazio():
             x = x.getDir()
         return x
+
     def sucessor(self, x):
         if x.getDir() != self.getVazio():
             return self.minimo(x.getDir())
@@ -97,18 +95,15 @@ class arvoreAVL():
                 y = y.getPai()
             return y
 
-    def prodecessor(self, x):
-      currentNo = self.buscar(self.getRaiz(),x)
-      if currentNo.getEsq() is not None:
-        return self.maximo(currentNo.getEsq())
-      y = currentNo.getPai()
-      while y is not None and currentNo is y.getEsq():
-        currentNo = y
-        y = y.getPai()
-      return y
-
     def verifica(self, no):
         return self.altura(no.getEsq()) - self.altura(no.getDir())
+
+    def altura(self, x):
+        if x == self.getVazio():
+            return -1
+        h1 = self.altura(x.getEsq())
+        h2 = self.altura(x.getDir())
+        return (1 + max(h1, h2))
 
     def balanceamento(self, nodo):
         while nodo.getPai() != self.getVazio():
@@ -159,26 +154,16 @@ class arvoreAVL():
         y.setDir(x)
         x.setPai(y)
 
-    def inserirElemento(self, dado):
-        novo = No(dado)
-        y = self.getVazio()
-        x = self.getRaiz()
-        while x != self.getVazio():
-            y = x
-            if novo.getChave() < x.getChave():
-                x = x.getEsq()
-            else:
-                x = x.getDir()
-        novo.setPai(y)
-        if y == self.getVazio():
-            self.setRaiz(novo)
-        elif novo.getChave() < y.getChave():
-            y.setEsq(novo)
+    def nivel(self, nodo):
+        if nodo == self.getVazio():
+            return -1
         else:
-            y.setDir(novo)
-        novo.setDir(self.getVazio())
-        novo.setEsq(self.getVazio())
-        self.balanceamento(novo)
+            x = nodo
+            nivel = 1
+            while x != self.getRaiz():
+                x = x.getPai()
+                nivel += 1
+        return nivel
 
     def removeElemento(self, z):
         z = self.buscar(self.getRaiz(), z)
@@ -202,35 +187,27 @@ class arvoreAVL():
             z.setChave(y.getChave())
         return y
 
-    def Nivel(self, nodo):
-        if nodo == self.getVazio():
-            return -1
-        else:
-            x = nodo
-            nivel = 1
-            while x != self.getRaiz():
-                x = x.getPai()
-                nivel += 1
-        return nivel
-###################################################
 
-generos=int(input())
-for gen in range(generos):
-  Banco=arvoreAVL()
-  while True:
-    cmd=input()
-    if cmd[0]=="I":
-      Banco.inserirElemento(int(cmd[1:]))
-    elif cmd[0]=="N":
-      print(Banco.Nivel(Banco.buscar(Banco.getRaiz(), int(cmd[1:]))))
-    elif cmd[0]=="L":
-      Lfilme=cmd.split(" ")
-      FilmesNoBanco=[]
-      for i in range(int(Lfilme[1]),int(Lfilme[2])+1):
-        if Banco.buscar(Banco.getRaiz(),i).getChave() is not None:
-          FilmesNoBanco.append(str(i))
-      print(" ".join(FilmesNoBanco))
-    else:
-      break
-  if gen!=generos-1:
-    print("")
+def comandos(qtd):
+    guarda = []
+    for x in range(qtd):
+        bancoDados = arvoreAVL()
+        while True:
+            instrucao = input()
+            if instrucao[0] == "I":
+                bancoDados.inserirElemento(int(instrucao[1:]))
+            elif instrucao[0] == "N":
+                print(bancoDados.nivel(bancoDados.buscar(bancoDados.getRaiz(), int(instrucao[1:]))))
+            elif instrucao[0] == "L":
+                filmes = instrucao.split(" ")
+                for x in range(int(filmes[1]), int(filmes[2]) + 1):
+                    if bancoDados.buscar(bancoDados.getRaiz(), x).getChave() is not None:
+                        guarda.append(x)
+                print(" ".join(map(str,guarda)))
+            else:
+                break
+        if x != qtd - 1:
+            print("")
+
+qtd = int(input())
+comandos(qtd)
