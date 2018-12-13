@@ -1,22 +1,17 @@
-def procura(lista, atual, destino, caminho = 1, visitados = []):
+def buscar(lista, atual, destino, visitados = None,contador = 1):
 	if destino in lista[atual]:
-		print(caminho)
+		print(contador)
 		return
-	visitados.append(atual)
-	for i in lista[atual]:
-		if i not in visitados:
-			if procura(lista, i, destino, caminho+1, visitados):
-				return True
-	return False
+	else:
+		for i in lista[atual]:
+			if i != visitados:
+				buscar(lista, i, destino, atual,contador+1)
 
-
-cidades, origem, destino = [int(c) for c in input().split()]
-listacidades = [[] for _ in range(cidades)]
-for i in range(cidades-1):
+c, origem, destino = [int(c) for c in input().split()]
+cidades = [[] for x in range(c)]
+for i in range(c-1):
 	a, b = [int(n) for n in input().split()]
-	listacidades[a-1].append(b-1)
-	listacidades[b-1].append(a-1)
-visitados = []
-caminho = 0
+	cidades[a-1].append(b-1)
+	cidades[b-1].append(a-1)
 
-procura(listacidades, origem-1, destino-1)
+buscar(cidades, origem-1, destino-1)
