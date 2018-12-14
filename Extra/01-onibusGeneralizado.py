@@ -1,7 +1,4 @@
-# infinito:
-inf = float("inf")
-# dijkstra
-def dijkstra(grafo, source):
+def dijkstra(grafo, destino):
     # variaveis
     distancia = {}
     no_anterior = {}
@@ -9,9 +6,9 @@ def dijkstra(grafo, source):
     q = {}
     # atribui distancias e de onde veio:
     for v in grafo:
-      distancia[v] = inf
+      distancia[v] = float("inf")
       no_anterior[v] = None
-    distancia[source] = 0
+    distancia[destino] = 0
     q = distancia
     while len(q) is not 0:
         u = min(q, key=q.get) #menor da queue
@@ -49,23 +46,18 @@ for i in range(int(cidades[1])):
       else: grafo[int(voos[1])].update({int(voos[0]):int(voos[2])})
 #print(grafo)
 #print(dijkstra(grafo,0))
-menor = inf
-for i in range(int(cidades[0])): #compara distancia de todas as cidades entre si
-    cidades=dijkstra(grafo,i)
-    distancia = cidades[max(cidades, key=cidades.get)]#cidades mais distantes entre si
-    #entre as mais distantes pega o caminho mais proximo:
-    if distancia < menor:
-      menor = distancia
-print(menor)
 
 
 def menor(dist):
     menor = float("inf")
-    for x in dist:
-        if x < menor:
-            menor = x
+    menor = inf
+    for i in range(int(cidades[0])): #compara distancia de todas as cidades entre si
+        cidades=dijkstra(grafo,i)
+        distancia = cidades[max(cidades, key=cidades.get)]#cidades mais distantes entre si
+        #entre as mais distantes pega o caminho mais proximo:
+        if distancia < menor:
+          menor = distancia
     return menor
-
 
 distancia, q, dist = [], [],[]
 qtd, origem, destino = [int(qtd) for qtd in input().split()]
@@ -78,5 +70,5 @@ while True:
     grafo[b - 1].append(a - 1)
     distancia.append(peso)
 
-dijkstra(grafo, distancia, q)
+dijkstra(grafo, destino)
 print(menor(dist))
