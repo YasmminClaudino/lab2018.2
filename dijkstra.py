@@ -1,11 +1,5 @@
-#grafo = {0: {1: 2, 2: 4}, 1: {3: 1, 0: 2}, 2: {0: 4, 3: 5}, 3: {1: 1, 2: 5}}
-grafo = {0: {1: 2, 2: 4}, 1: {3: 1, 0: 2}, 2: {0: 4, 3: 5, 3: 2}, 3: {1: 1, 2: 5, 2: 2}}
-
-# infinito:
 inf = float("inf")
-# dijkstra
 def dijkstra(grafo, source):
-    # variaveis
     distancia = {}
     no_anterior = {}
     peso_do_no = {}
@@ -28,4 +22,7 @@ def dijkstra(grafo, source):
                 q[v] = temp_distancia
                 no_anterior[v] = u
     return peso_do_no
+
+grafo = {0: {1: 2, 2: 4}, 1: {3: 1, 0: 2}, 2: {0: 4, 3: 5, 3: 2}, 3: {1: 1, 2: 5, 2: 2}}
+
 print(dijkstra(grafo,0))
