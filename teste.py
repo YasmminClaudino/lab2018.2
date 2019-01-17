@@ -1,22 +1,56 @@
-def procura(lista, atual, destino, caminho = 1, visitados = []):
-	if destino in lista[atual]:
-		print(caminho)
-		return
-	visitados.append(atual)
-	for i in lista[atual]:
-		if i not in visitados:
-			if procura(lista, i, destino, caminho+1, visitados):
-				return True
-	return False
+def addVizinho(x, y):
+    listaDeVizinhos[x - 1].append(y - 1)
+    listaDeVizinhos[y - 1].append(x - 1)
 
 
-cidades, origem, destino = [int(c) for c in input().split()]
-listacidades = [[] for _ in range(cidades)]
-for i in range(cidades-1):
-	a, b = [int(n) for n in input().split()]
-	listacidades[a-1].append(b-1)
-	listacidades[b-1].append(a-1)
-visitados = []
-caminho = 0
+def criarMatrizDistancias(numDeCidade):
+    matriz = [[] for x in range(numDeCidade)]
+    for cidade in range(len(matriz)):
+        matriz[cidade] = [0 for x in range(numDeCidade)]
+    return matriz
 
-procura(listacidades, origem-1, destino-1)
+
+def addDistancia(x, y, distancia):
+    matrizDistancia[x][y] = distancia
+    matrizDistancia[y][x] = distancia
+
+
+# MAIN
+
+def menorCaminho(caminhos):
+    menor = float("inf")
+    listaMenor = 0
+    for x in range(len(caminhos)):
+        soma = sum(caminhos[x])
+        if soma < menor:
+            listaMenor = x+1
+            menor = soma
+    return listaMenor
+
+def preencherDistancia(cidadeOrigem, linhaVizinhos, cidadeAtual, distancia=1, visitados=[]):
+    visitados.append(cidadeAtual)
+    for z in linhaVizinhos[cidadeAtual]:
+        if z not in visitados:
+            addDistancia(cidadeOrigem, z, distancia)
+            preencherDistancia(cidadeOrigem, linhaVizinhos, z, distancia + 1, visitados)
+        else:
+            return
+
+
+count = 1
+while True:
+    numCidades = int(input())
+    listaDeVizinhos = [[] for n in range(numCidades)]
+    matrizDistancia = criarMatrizDistancias(numCidades)
+
+    for n in range(numCidades - 1):
+        x, y = input().split()
+        addVizinho(int(x), int(y))
+
+    for x in range(numCidades):
+        preencherDistancia(x, listaDeVizinhos, x, 1, [])
+
+    print("Teste ", count)
+    print(menorCaminho(matrizDistancia))
+    print()
+    count+=1

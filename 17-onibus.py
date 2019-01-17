@@ -13,5 +13,4 @@ for i in range(c-1):
 	a, b = [int(n) for n in input().split()]
 	cidades[a-1].append(b-1)
 	cidades[b-1].append(a-1)
-
 buscar(cidades, origem-1, destino-1)
