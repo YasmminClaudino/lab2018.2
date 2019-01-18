@@ -150,7 +150,7 @@ class arvoreAVL():
         elif x == x.getPai().getDir():
             x.getPai().setDir(y)
         else:
-            x.getPai().setEsq(y)
+            x.getPai2().setEsq(y)
         y.setDir(x)
         x.setPai(y)
 
