@@ -44,14 +44,8 @@ def percorre(grafo, vertices):
     r = len(ordenar)-1
     quicksort(ordenar,p,r)
     #print("quick", ordenar)
-    for i in ordenar:
-        #print("que ",ordenar)
-        saida = []
-     #   print("este ", i)
-        for j in i:
-            saida.append(j)
-        s = " ".join(map(str,saida))
-        print(s)
+    t = len(ordenar)
+    print(n-t)
 
 #main
 contador = 1
@@ -67,8 +61,9 @@ while True:
     for i in range(redes):
         entrada = input().split()
         a, b = entrada[0],entrada[1]
-        impacto = int(entrada[2])
+        impacto = 1
         grafo[(a, b)] = impacto
         vertices.update(a, b)
+    i+=1
     percorre(grafo, vertices)
     contador += 1

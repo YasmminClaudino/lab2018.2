@@ -14,7 +14,7 @@ def partition(l, p, r):
     l[i + 1], l[r] = l[r], l[i + 1]
     return (i+1)
 p = 0
-l = [3,2]
-r = 1 #tamanho da lista -1
+l = [3,2,2,1,5,6,0]
+r = len(l)-1 #tamnho da lista -1
 quicksort(l,p,r)
 print(l)
